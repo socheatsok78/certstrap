@@ -81,6 +81,10 @@ func NewInitCommand() cli.Command {
 				Name:  "locality, l",
 				Usage: "Sets the Locality (L) field of the certificate",
 			},
+			cli.StringSliceFlag{
+				Name:  "crl",
+				Usage: "Sets the CRL Distribution Points field of the certificate",
+			},
 			cli.StringFlag{
 				Name:  "key",
 				Usage: "Path to private key PEM file (if blank, will generate new key pair)",
@@ -192,6 +196,7 @@ func initAction(c *cli.Context) {
 
 	opts := []pkix.Option{
 		pkix.WithPathlenOption(c.Int("path-length"), c.Bool("exclude-path-length")),
+		pkix.WithCRLDistributionPointsOption(c.StringSlice("crl")),
 	}
 
 	crt, err := pkix.CreateCertificateAuthorityWithOptions(key, c.String("organizational-unit"), expiresTime, c.String("organization"), c.String("country"), c.String("province"), c.String("locality"), c.String("common-name"), c.StringSlice("permit-domain"), opts...)
