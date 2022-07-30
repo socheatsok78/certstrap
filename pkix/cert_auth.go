@@ -147,6 +147,15 @@ func WithPathlenOption(pathlen int, excludePathlen bool) func(template *x509.Cer
 	}
 }
 
+// WithCRLDistributionPointsOption add CRLDistributionPoints to the certificate.
+func WithCRLDistributionPointsOption(crlDistributionPoints []string) func(template *x509.Certificate) {
+	return func(template *x509.Certificate) {
+		if len(crlDistributionPoints) > 0 {
+			template.CRLDistributionPoints = crlDistributionPoints
+		}
+	}
+}
+
 func applyOptions(template *x509.Certificate, opts []Option) {
 	for _, opt := range opts {
 		opt(template)
